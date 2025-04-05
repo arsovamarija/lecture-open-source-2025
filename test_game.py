@@ -18,7 +18,11 @@ def test_benutzereingabe():
 
     with patch("builtins.input", side_effect=["50"]):
         eingabe = benutzereingabe()
-    assert eingabe == 50, f"Test fehlgeschlagen: Erwartet 50, aber erhalten {eingabe}."
+        
+    # Test expects `200`, but the input is simulated to be `50`.
+    # This will fail because `eingabe` will be `50` and not `200`
+    assert eingabe == 200, f"Test fehlgeschlagen: Erwartet 200, aber erhalten {eingabe}."
+
 
 
 def test_spiele_runde_richtig():
@@ -27,11 +31,11 @@ def test_spiele_runde_richtig():
     # Hier simulieren wir die Benutzereingabe mit einem Patch
     from unittest.mock import patch
 
-    with patch("builtins.input", side_effect=["50"]):
+    with patch("builtins.input", side_effect=["50"]):  # Simulating correct guess
         with patch("builtins.print") as mock_print:
             spiele_runde(zahl)
             mock_print.assert_any_call(
-                f"Glückwunsch! Du hast die Zahl {zahl} in 1 Versuchen erraten."
+                f"Glückwunsch! Du hast die Zahl {zahl} in 2 Versuchen erraten."  # Expecting 2 attempts, but only 1 occurs
             )
 
 
@@ -47,7 +51,7 @@ def test_spiele_runde_falsch():
             mock_print.assert_any_call("Zu niedrig! Versuche es erneut.")
             mock_print.assert_any_call("Zu hoch! Versuche es erneut.")
             mock_print.assert_any_call(
-                f"Glückwunsch! Du hast die Zahl {zahl} in 3 Versuchen erraten."
+                f"Du hast die Zahl {zahl} in 3 Versuchen erraten."  # Breaking the expected success message
             )
 
 
